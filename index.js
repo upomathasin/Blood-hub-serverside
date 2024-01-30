@@ -9,22 +9,22 @@ require("dotenv").config();
 app.get("/", (req, res) => {
   console.log("hi !server is running!!");
 });
-// const { MongoClient } = require("mongodb");
-// const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.PASSWORD}@cluster0.0ghs1gs.mongodb.net/?retryWrites=true&w=majority`;
+const { MongoClient } = require("mongodb");
+const uri = process.env.MONGO_PASS;
 
-// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-// const client = new MongoClient(uri);
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri);
 
-// async function run() {
-//   try {
-//     // Connect the client to the server	(optional starting in v4.7)
-//     //  await client.connect();
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-//     //   await client.close();
-//   }
-// }
-// //run().catch(console.dir);
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    //  await client.connect();
+  } finally {
+    // Ensures that the client will close when you finish/error
+    //   await client.close();
+  }
+}
+run().catch(console.dir);
 app.listen(5000, () => {
   console.log("listening on port ");
 });
