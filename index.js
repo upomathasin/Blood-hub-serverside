@@ -5,7 +5,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 require("dotenv").config();
-app.get((req, res) => console.log("Hi "));
+app.get("/", (req, res) => console.log("Hi "));
 
 app.post("/users", (req, res) => {
   console.log(req.body);
