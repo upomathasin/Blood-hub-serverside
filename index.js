@@ -1,16 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-const port = process.env.PORT;
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 require("dotenv").config();
-app.get("/", (req, res) => console.log("Hi "));
 
-app.post("/users", (req, res) => {
-  console.log(req.body);
+app.get("/", (req, res) => {
+  console.log("hi !server is running!!");
 });
-
 // const { MongoClient } = require("mongodb");
 // const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.PASSWORD}@cluster0.0ghs1gs.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -27,4 +25,6 @@ app.post("/users", (req, res) => {
 //   }
 // }
 // //run().catch(console.dir);
-app.listen(port, () => console.log("Listening on port 5000"));
+app.listen(5000, () => {
+  console.log("listening on port ");
+});
