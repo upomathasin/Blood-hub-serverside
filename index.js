@@ -8,7 +8,8 @@ require("dotenv").config();
 app.get("/", (req, res) => {
   res.send("hi !server is running!!");
 });
-const { MongoClient } = require("mongodb");
+
+const { MongoClient, ObjectId } = require("mongodb");
 const uri = process.env.SECRET_MONGOURI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -16,11 +17,34 @@ const client = new MongoClient(uri);
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    //  await client.connect();
+    app.post("/users", async (req, res) => {
+      console.log(req.body);
+
+      const result = await client
+        .db("bloodHub")
+        .collection("users")
+        .insertOne(req.body);
+      res.send(result);
+    });
+
+    app.get("/users", async (req, res) => {
+      const result = await client
+        .db("bloodHub")
+        .collection("users")
+        .find()
+        .toArray();
+      res.send(result);
+    });
+
+    app.get("/users/:email", async (req, res) => {
+      let email = req.params.email;
+      const result = await client
+        .db("bloodHub")
+        .collection("users")
+        .findOne({ email: email });
+      res.send(result);
+    });
   } finally {
-    // Ensures that the client will close when you finish/error
-    //   await client.close();
   }
 }
 run().catch(console.dir);
