@@ -25,6 +25,7 @@ async function run() {
         .collection("users")
         .insertOne(req.body);
       res.send(result);
+      console.log(result);
     });
 
     app.get("/users", async (req, res) => {
@@ -43,6 +44,11 @@ async function run() {
         .collection("users")
         .findOne({ email: email });
       res.send(result);
+      console.log(result);
+    });
+
+    app.post("/bloodReq", (req, res) => {
+      console.log(req.body);
     });
   } finally {
   }
