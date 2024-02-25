@@ -39,16 +39,31 @@ async function run() {
 
     app.get("/users/:email", async (req, res) => {
       let email = req.params.email;
+      // console.log(email);
       const result = await client
         .db("bloodHub")
         .collection("users")
         .findOne({ email: email });
       res.send(result);
-      console.log(result);
+      //console.log(result);
+    });
+
+    app.put("/users/:email", (req, res) => {
+      console.log(req.body);
     });
 
     app.post("/bloodReq", (req, res) => {
       console.log(req.body);
+    });
+
+    app.get("/users/admin/:email", async (req, res) => {
+      let email = req.params.email;
+      const result = await client
+        .db("bloodHub")
+        .collection("users")
+        .findOne({ email: email });
+      const isAdmin = result.role === "admin";
+      res.send(isAdmin);
     });
   } finally {
   }
