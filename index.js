@@ -34,6 +34,7 @@ async function run() {
         .collection("users")
         .find()
         .toArray();
+
       res.send(result);
     });
 
@@ -52,6 +53,34 @@ async function run() {
       console.log(req.body);
     });
 
+    app.put("/users/:email/changeRole", async (req, res) => {
+      const collectionName = client.db("bloodHub").collection("users");
+      console.log(req.body.updatedRole);
+      const result = await collectionName.updateOne(
+        { email: req.params.email },
+        {
+          $set: {
+            role: req.body.updatedRole,
+          },
+        }
+      );
+
+      res.send(result);
+    });
+    app.put("/users/:email/changeStatus", async (req, res) => {
+      const collectionName = client.db("bloodHub").collection("users");
+
+      const result = await collectionName.updateOne(
+        { email: req.params.email },
+        {
+          $set: {
+            status: req.body.updatedStatus,
+          },
+        }
+      );
+
+      res.send(result);
+    });
     app.post("/bloodReq", (req, res) => {
       console.log(req.body);
     });
@@ -62,7 +91,8 @@ async function run() {
         .db("bloodHub")
         .collection("users")
         .findOne({ email: email });
-      const isAdmin = result.role === "admin";
+      const isAdmin = result.role && result.role == "admin" ? true : false;
+
       res.send(isAdmin);
     });
   } finally {
