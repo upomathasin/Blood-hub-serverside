@@ -49,8 +49,30 @@ async function run() {
       //console.log(result);
     });
 
-    app.put("/users/:email", (req, res) => {
+    app.patch("/users/updateProfile/:email", async (req, res) => {
+      const collectionName = client.db("bloodHub").collection("users");
       console.log(req.body);
+
+      const newProfile = {
+        name: req.body.name,
+        available: req.body.available,
+        lastDonate: req.body.lastDonate,
+        location: req.body.location,
+        phone: req.body.phone,
+        role: req.body.role,
+        status: req.body.status,
+      };
+      const result = await collectionName.updateOne(
+        { email: req.params.email },
+        {
+          $set: {
+            ...newProfile,
+          },
+        }
+      );
+
+      console.log(result);
+      res.send(result);
     });
 
     app.put("/users/:email/changeRole", async (req, res) => {
@@ -80,9 +102,6 @@ async function run() {
       );
 
       res.send(result);
-    });
-    app.post("/bloodReq", (req, res) => {
-      console.log(req.body);
     });
 
     app.get("/users/admin/:email", async (req, res) => {
