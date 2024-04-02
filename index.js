@@ -125,6 +125,55 @@ async function run() {
 
       res.send(isBlock);
     });
+
+    app.post("/users/bloodRequest", async (req, res) => {
+      console.log(req.body);
+
+      const result = await client
+        .db("bloodHub")
+        .collection("requestBlood")
+        .insertOne(req.body);
+
+      res.send(result);
+    });
+
+    app.get("/myRequests/:email", async (req, res) => {
+      let email = req.params.email;
+      const result = await client
+        .db("bloodHub")
+        .collection("requestBlood")
+        .find({ requestedBy: email })
+        .toArray();
+
+      console.log("my request : ", result);
+      res.send(result);
+    });
+
+    app.delete("/myRequest/:reqId", async (req, res) => {
+      const result = await client
+        .db("bloodHub")
+        .collection("requestBlood")
+        .deleteOne({ _id: ObjectId(req.params.reqId) });
+
+      console.log(result);
+      res.send(result);
+    });
+    app.patch("/myRequest/:reqId", async (req, res) => {
+      const result = await client
+        .db("bloodHub")
+        .collection("requestBlood")
+        .updateOne(
+          { _id: ObjectId(req.params.reqId) },
+          {
+            $set: {
+              status: "Managed",
+            },
+          }
+        );
+
+      console.log(result);
+      res.send(result);
+    });
   } finally {
   }
 }
