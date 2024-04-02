@@ -114,6 +114,17 @@ async function run() {
 
       res.send(isAdmin);
     });
+
+    app.get("/users/checkStatus/:email", async (req, res) => {
+      let email = req.params.email;
+      const result = await client
+        .db("bloodHub")
+        .collection("users")
+        .findOne({ email: email });
+      const isBlock = result.status && result.status === "Block" ? true : false;
+
+      res.send(isBlock);
+    });
   } finally {
   }
 }
