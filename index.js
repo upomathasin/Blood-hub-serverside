@@ -5,10 +5,6 @@ app.use(cors());
 app.use(express.json());
 require("dotenv").config();
 
-app.get("/", (req, res) => {
-  res.send("hi !server is running!!");
-});
-
 const { MongoClient, ObjectId } = require("mongodb");
 const uri = process.env.SECRET_MONGOURI;
 
