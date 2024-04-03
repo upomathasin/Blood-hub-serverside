@@ -11,8 +11,22 @@ const uri = process.env.SECRET_MONGOURI;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri);
 
+console.log(uri, client);
+app.get("/users", async (req, res) => {
+  res.send("users");
+});
 async function run() {
   try {
+    app.get("/users", async (req, res) => {
+      const result = await client
+        .db("bloodHub")
+        .collection("users")
+        .find()
+        .toArray();
+
+      res.send(result);
+    });
+
     app.post("/users", async (req, res) => {
       //   console.log(req.body);
 
@@ -22,16 +36,6 @@ async function run() {
         .insertOne(req.body);
       res.send(result);
       //console.log(result);
-    });
-
-    app.get("/users", async (req, res) => {
-      const result = await client
-        .db("bloodHub")
-        .collection("users")
-        .find()
-        .toArray();
-
-      res.send(result);
     });
 
     app.get("/users/:email", async (req, res) => {
