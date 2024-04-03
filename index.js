@@ -18,14 +18,14 @@ const client = new MongoClient(uri);
 async function run() {
   try {
     app.post("/users", async (req, res) => {
-      console.log(req.body);
+      //   console.log(req.body);
 
       const result = await client
         .db("bloodHub")
         .collection("users")
         .insertOne(req.body);
       res.send(result);
-      console.log(result);
+      //console.log(result);
     });
 
     app.get("/users", async (req, res) => {
@@ -51,7 +51,7 @@ async function run() {
 
     app.patch("/users/updateProfile/:email", async (req, res) => {
       const collectionName = client.db("bloodHub").collection("users");
-      console.log(req.body);
+      // console.log(req.body);
 
       const newProfile = {
         name: req.body.name,
@@ -71,13 +71,13 @@ async function run() {
         }
       );
 
-      console.log(result);
+      //console.log(result);
       res.send(result);
     });
 
     app.put("/users/:email/changeRole", async (req, res) => {
       const collectionName = client.db("bloodHub").collection("users");
-      console.log(req.body.updatedRole);
+      // console.log(req.body.updatedRole);
       const result = await collectionName.updateOne(
         { email: req.params.email },
         {
@@ -127,7 +127,7 @@ async function run() {
     });
 
     app.post("/users/bloodRequest", async (req, res) => {
-      console.log(req.body);
+      //  console.log(req.body);
 
       const result = await client
         .db("bloodHub")
@@ -145,7 +145,7 @@ async function run() {
         .find({ requestedBy: email })
         .toArray();
 
-      console.log("my request : ", result);
+      //    console.log("my request : ", result);
       res.send(result);
     });
 
@@ -153,25 +153,26 @@ async function run() {
       const result = await client
         .db("bloodHub")
         .collection("requestBlood")
-        .deleteOne({ _id: ObjectId(req.params.reqId) });
+        .deleteOne({ _id: new ObjectId(req.params.reqId) });
 
       console.log(result);
       res.send(result);
     });
-    app.patch("/myRequest/:reqId", async (req, res) => {
+    app.put("/myRequest/:reqId", async (req, res) => {
+      console.log("new req ", req.body.status);
       const result = await client
         .db("bloodHub")
         .collection("requestBlood")
         .updateOne(
-          { _id: ObjectId(req.params.reqId) },
+          { _id: new ObjectId(req.params.reqId) },
           {
             $set: {
-              status: "Managed",
+              status: req.body.status,
             },
           }
         );
 
-      console.log(result);
+      console.log("edit ", result);
       res.send(result);
     });
   } finally {
